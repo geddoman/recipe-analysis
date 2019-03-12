@@ -1,0 +1,98 @@
+ajwain	ajwain
+allspice	allspice,all spice
+almond_meal	almond meal,almond flour
+anise_seed	anise seed
+annatto	annatto
+arrowroot_powder	arrowroot powder
+asafoetida	asafoetida
+beetroot_powder	beetroot powder
+bell_peppers	bell peppers,bell pepper
+cocoa	cacao,cocoa,cocoa powder
+caraway_seed	caraway seed,caraway
+cardamom	cardamom,cardamom powder,ground cardamom
+celery_seed	celery seed,celery seeds
+chia_seeds	chia seeds,chia,chia seed
+chiles	chiles,chili,chile
+cinnamon	cinnamon,ground cinnamon,cinnamon powder,ground cinnamon
+lemon_zest	lemon zest,zest of a lemon
+orange_zest	orange zest,zest of an orange
+lemon_peel	lemon peel
+orange_peel	orange peel
+cloves	cloves,clove
+coriander	coriander
+cubeb_berry	cubeb berry
+cumin	cumin,ground cumin,cumin powder
+dill_seed	dill seed,dill seeds
+fennel	fennel
+fenugreek	fenugreek
+galangal_root_powder	galangal root powder,galangal
+garlic	garlic,crushed garlic,garlic paste
+ginger	ginger,ginger root,fresh ginger,ground ginger,ginger powder
+grains_of_paradise	grains of paradise
+horseradish_powder	horseradish powder,ground horseradish
+juniper_berries	juniper berries,juniper berry
+long_pepper	long pepper,long peppers
+mace	mace
+malheb	malheb
+mustard	mustard,dijon mustard,english mustard,american mustard,yellow mustard
+mustard_seed	mustard seeds,mustard seed
+nigella_sativa	nigella sativa
+nutmeg	nutmeg
+onion	onion,onions
+paprika	paprika,sweet paprika,hot paprika
+pepper	pepper,peppers
+poppy_seed	poppy seed,poppy seeds
+porcini_powder	porcini powder,powdered porcini
+saffron	saffron
+sesame_seed	sesame seed,sesame seeds
+shallots	shallots,shallot
+star_anise	star anise,anise
+sumac	sumac
+turmeric	turmeric
+vanilla	vanilla,vanilla extract,vanilla essence
+vanilla_bean	vanilla bean,vanilla pod,vanilla beans,vanilla pods
+basil	basil,basil leaf,basil leaves
+bay_leaves	bay leaves,bay leaf
+celery_flakes	celery flakes,celery flake
+chervil	chervil
+cilantro	cilantro leaves,cilantro,cilantro leaf
+curry_leaves	curry leaves,curry leaf
+dill_weed	dill weed
+dried_chives	dried chives,dried chive
+dried_fenugreek_leaves	dried fenugreek leaves,dried fenugreek
+dried_rose_petals	dried rose petals,dried rose petal
+dried_tarragon	dried tarragon,dry tarragon
+dried_thyme	dried thyme,dry thyme
+dried_marjoram	dried marjoram,dry marjoram
+dried_mint	dried mint,dry mint
+dried_oregano	dried oregano,dry oregano
+dried_parsley	dried parsley,dry parsley
+dried_rosemary	dried rosemary,dry rosemary
+dried_sage	dried sage,dry sage
+dried_onion	dried onion,dry onion,onion powder
+dried_garlic	dried garlic,dry garlic,garlic powder
+dried_basil	dried basil,dry basil
+cayenne_pepper	cayenne pepper
+black_pepper	black pepper,ground black pepper,crushed black pepper,ground pepper,crushed pepper
+peppercorn	pepper corn,pepper corns,peppercorns
+epazote	epazote
+file_powder	file powder
+kaffir_lime	kaffir lime
+lavender	lavender
+lemongrass	lemongrass
+marjoram	marjoram,fresh marjoram
+mint	mint,fresh mint
+oregano	oregano,fresh oregano
+parsley	parsley,fresh parsley
+rosemary	rosemary
+sage	sage
+summer_savory	summer savory
+tarragon	tarragon
+thyme	thyme,fresh thyme
+apple_cider_vinegar_powder	apple cider vinegar powder
+bonito_flakes	bonito flakes,bonito,bonito flake
+citric_acid	citric acid
+cream_of_tartar	cream of tartar
+curing_salt	curing salt
+granulated_honey	granulated honey
+maple_sugar	maple sugar
