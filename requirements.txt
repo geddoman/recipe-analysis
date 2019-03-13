@@ -2,8 +2,6 @@ gensim
 spacy
 pandas
 flashtext
-re
-csv
 matplotlib
 tqdm
 nltk
