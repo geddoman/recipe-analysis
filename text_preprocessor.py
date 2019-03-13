@@ -1,43 +1,30 @@
 # Importing the necessary libraries
 
 import re
+import csv
 import pickle
 from flashtext import KeywordProcessor
+from nltk.corpus import stopwords
 import spacy
-import en_core_web_sm
-
-# Assigning the file paths to variables
-
-repl_file = 'DataSets/repl_dict'
-stop_file = 'DataSets/stop_list_prop.txt'
-
-# Loading the replacement dictionary and preparing the keyword processor
-
-with open(repl_file,mode='r+b') as f:
-    repl_dict = pickle.load(f)
-    
-for k,v in repl_dict.items():
-    repl_dict[k] = [syn for syn in v]
-    
-kp = KeywordProcessor()
-kp.add_keywords_from_dict(repl_dict)
-
-# Setting the patterns for regex used in the below function
-
-patt = re.compile(r'[\W+]')
-patt_2 = re.compile(r'\b\d+\b')
-patt_3 = re.compile(r' {2,}')
 
 
-# Loading the custom stop word list as a set object for later use
+# Setting the patterns for regex used in the cleaning helper function
 
-stop_set = set()
+patt = re.compile(r'[\W+]') # Pattern for any non-alphanumeric characters
+patt_2 = re.compile(r'\b\d+\b') # Pattern for stand-alone numeric characters
+patt_3 = re.compile(r'\b[A-Za-z]\b') # Pattern for single alphabetical characters
+patt_4 = re.compile(r' {2,}') # Pattern for repeating whitespace
 
-with open(stop_file) as f:
-    for word in f:
-        stop_set.add(word.strip())
+
+# Loading the English stop words from NLTK and assiging to a set object
+
+stop_set = set(stopwords.words('english'))
+
+# Updating the stop_set with additional terms
+stop_set.update(['-PRON-','minute','add','heat','cook','minutes'])
 
 # Loading the spacy model for use in lemmatization
+
 nlp = spacy.load('en_core_web_sm', disable=['parser','ner'])
 
 def text_cleaner(doc):
@@ -50,12 +37,59 @@ def text_cleaner(doc):
     This function can be used on its own, but it is part of the more
     encompassing text_prepro function.
 
+    Parameters:
+    ----------
+    doc : str
+        The document or string to be cleaned
+
+    Returns:
+    -------
+    Normalized and lower case str
+
     """
     doc = doc.replace('&',' and ')
     doc = re.sub(patt,' ',doc)
     doc = re.sub(patt_2,' ',doc)
     doc = re.sub(patt_3,' ',doc)
+    doc = re.sub(patt_4,' ',doc)
+
     return doc.lower().strip()
+
+
+def make_repl_dict(repl_file):
+    """
+    Helper function that uses a custom replacement dictionary and returns
+    a FlashText KeywordProcessor object to use for the actual replacement.
+
+    Parameters:
+    ----------
+
+    repl_file : str
+        Path to the replacement dictionary txt file. The file contents should
+        be all in lower case and it should contain the key at the start of each
+        line with underscores replacing the spaces if present. Then a single
+        tab character followed by the values that you want to replace with 
+        the key separated by commas. Check the example below.
+
+        key_word_1/tvalue 1,value 2,value 3
+        key_word_2/tvalue 4,value 5,value 6
+
+    Returns:
+    -------
+    FlashText KeywordProcessor object containing the replacement dict.
+
+    """
+
+    repl_dict = {}
+    with open(repl_file) as f:
+        row_reader = csv.reader(f,delimiter='\t')
+        for key,value in row_reader:
+            repl_dict[key] = value.split(',')
+        
+    kp = KeywordProcessor()
+    kp.add_keywords_from_dict(repl_dict)
+
+    return kp
 
 
 def lemmatizer(doc):
@@ -66,40 +100,93 @@ def lemmatizer(doc):
     include the string -PRON- replacing pronouns in the doc. Due to this
     -PRON- is added to the stop list.
 
+
+    Parameters:
+    ----------
+    doc : str
+        The document or string to be lemmatized using spaCy
+
+    
+    Returns:
+    -------
+    Str with lemmas of words where applicable
+
     """
     prepared_doc = nlp(doc)
+
     return ' '.join([token.lemma_ for token in prepared_doc])
 
 
-def tokenizer(doc):
+def tokenizer(doc, remove_stop=True):
     """
 
     Helper function that takes a document string as an argument and tokenizes
     the text into words that are not in the stop list. This should be used as
     the final function after the text is cleaned.
 
-    Returns a list of tokens (words).
+
+    Parameters:
+    ----------
+    doc : str
+        The document or string of text to be tokenized
+
+    remove_stop : boolean, default True
+        Determines whether to remove stop words or not
+
+    
+    Returns:
+    -------
+    List of tokenized words
 
     """
-    return [word.strip() for word in doc.split() if word not in stop_set]
+    if remove_stop:
+        return [word.strip() for word in doc.split() if word not in stop_set]
+    else:
+        return [word.strip() for word in doc.split()]
 
-def text_prepro(text):
+def text_prepro(text, replace=None, r_stop=True, lemmatize=True):
     """
 
     Main function that preprocesses the text by:
     1-Replacing ampersands
-    2-Removing special characters and added whitespace
-    3-Converting to lowercase
-    4-Replacing predefined words/phrases using a custom dictionary
-    5-Removing predefined stop words
-    6-Tokenizes the text, splitting on horizontal whitespace
+    2-Removing non-alphanumeric characters and added whitespace
+    3-Removing single character words
+    4-Removing numerical characters not attached to alphabetical characters
+    5-Converting to lowercase
+    6-Replacing predefined words/phrases using a custom dictionary
+    7-Removing predefined stop words
+    8-Tokenizes the text, splitting on horizontal whitespace
+    9-Lemmatizes the text
 
     Returns a cleaned list of tokens from the text.
+
+    Parameters:
+    ----------
+
+    text : str
+        Document or string of text to be preprocessed
+
+    replace : str, default None, optional
+        Path to replacement dictionary txt file
+
+    r_stop : boolean, default True
+        Value to pass to the tokenizer to remove or keep stop words
+
+    lemmatize : boolean
+        Determines whether to lemmatize the text or not
+
+    Returns:
+    -------
+    List of cleaned, lemmatized (if chosen), and tokenized words
 
     """
 
     text_cln = text_cleaner(text)
-    text_cln = kp.replace_keywords(text_cln)
-    text_cln = lemmatizer(text_cln)
-    text_cln = tokenizer(text_cln)
+    if replace != None:
+        kp = make_repl_dict(replace)
+        text_cln = kp.replace_keywords(text_cln)
+    if lemmatize:
+        text_cln = lemmatizer(text_cln)
+    text_cln = tokenizer(text_cln,remove_stop=r_stop)
+    
     return text_cln
