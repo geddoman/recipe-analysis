@@ -1,0 +1,9 @@
+gensim
+spacy
+pandas
+flashtext
+qgrid
+matplotlib
+tqdm
+nltk
+seaborn
