@@ -2,7 +2,8 @@ gensim
 spacy
 pandas
 flashtext
-qgrid
+re
+csv
 matplotlib
 tqdm
 nltk
