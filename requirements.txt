@@ -5,4 +5,4 @@ flashtext==2.7
 matplotlib==3.0.2
 seaborn==0.9.0
 qgrid==1.1.1
-pyLDAvis==2.1.2git 
+pyLDAvis==2.1.2
