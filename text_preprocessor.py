@@ -4,7 +4,6 @@ import re
 import csv
 import pickle
 from flashtext import KeywordProcessor
-from nltk.corpus import stopwords
 import spacy
 
 
@@ -16,9 +15,10 @@ patt_3 = re.compile(r'\b[A-Za-z]\b') # Pattern for single alphabetical character
 patt_4 = re.compile(r' {2,}') # Pattern for repeating whitespace
 
 
-# Loading the English stop words from NLTK and assiging to a set object
+# Loading the English stop words from disk and assigining to a set object
 
-stop_set = set(stopwords.words('english'))
+with open('stop_file',mode='r+b') as s_f:
+    stop_set = set(pickle.load(s_f))
 
 # Updating the stop_set with additional terms
 stop_set.update(['-PRON-','minute','add','heat','cook','minutes'])
