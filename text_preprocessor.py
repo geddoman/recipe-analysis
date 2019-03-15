@@ -5,6 +5,7 @@ import csv
 import pickle
 from flashtext import KeywordProcessor
 import spacy
+import en_core_web_sm
 
 
 # Setting the patterns for regex used in the cleaning helper function

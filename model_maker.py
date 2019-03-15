@@ -74,7 +74,7 @@ def tfidf_model_maker(text_series):
     return keyword_df
 
 
-def lda_model_maker(text_series, n_topics=20):
+def lda_model_maker(text_series, n_topics=20, vis=False):
     """
     Function that applies an LDA Model on the cleaned text.
 
@@ -86,6 +86,9 @@ def lda_model_maker(text_series, n_topics=20):
     n_topics : int, default 20
         Number of topics returned by the model
 
+    vis : boolean
+        Return a pyLDAvis object
+
     Returns:
     -------
     gensim LDA model from the text and visualization for the model
@@ -95,6 +98,9 @@ def lda_model_maker(text_series, n_topics=20):
     text_id2word, text_corpus = text_vectorizer(text_series)
 
     lda_model = LdaModel(text_corpus,num_topics=n_topics,id2word=text_id2word)
-    lda_vis = pyLDAvis.gensim.prepare(lda_model, text_corpus, text_id2word)
 
-    return lda_model, lda_vis
+    if vis:
+        lda_vis = pyLDAvis.gensim.prepare(lda_model, text_corpus, text_id2word)
+        return lda_model, lda_vis
+    else:
+        return lda_model
