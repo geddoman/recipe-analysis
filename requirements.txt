@@ -7,3 +7,4 @@ seaborn==0.9.0
 qgrid==1.1.1
 pyLDAvis==2.1.2
 numpy==1.15.4
+ipywidgets==7.4.2
