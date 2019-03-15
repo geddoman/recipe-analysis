@@ -3,14 +3,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - pip:
-    - jupyterlab
-    - qgrid
-    - gensim
-    - spacy
-    - pandas
-    - flashtext
-    - matplotlib
-    - seaborn
-    - pyLDAvis
-    - numpy
+  - jupyterlab
+  - qgrid
+  - pandas
