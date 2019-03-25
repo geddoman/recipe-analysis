@@ -17,16 +17,18 @@ patt_4 = re.compile(r' {2,}') # Pattern for repeating whitespace
 
 
 # Loading the English stop words from disk and assigining to a set object
+stop_set = set()
 
-with open('stop_file',mode='r+b') as s_f:
-    stop_set = set(pickle.load(s_f))
+with open('stop_list.txt',mode='r', encoding='UTF-8') as f_in:
+    for line in f_in:
+        stop_set.add(line.replace('\n',''))
 
 # Updating the stop_set with additional terms
-stop_set.update(['-PRON-','minute','add','heat','cook','minutes'])
+stop_set.update(['-PRON-'])
 
 # Loading the spacy model for use in lemmatization
 
-nlp = spacy.load('en_core_web_sm', disable=['parser','ner'])
+nlp = en_core_web_sm.load(disable=['parser','ner'])
 
 def text_cleaner(doc):
     """ 
@@ -118,7 +120,7 @@ def lemmatizer(doc):
     return ' '.join([token.lemma_ for token in prepared_doc])
 
 
-def tokenizer(doc, remove_stop=True):
+def tokenizer(doc, remove_stop=True, additional_stop=None):
     """
 
     Helper function that takes a document string as an argument and tokenizes
@@ -133,6 +135,11 @@ def tokenizer(doc, remove_stop=True):
 
     remove_stop : boolean, default True
         Determines whether to remove stop words or not
+    
+    additional_stop : str, Optional
+        Additional words to add to the stop list. These must be separated by a
+        single comma without any spacing and only single tokens.
+        For example: 'stop1,stop2,stop3,stop4'
 
     
     Returns:
@@ -140,12 +147,14 @@ def tokenizer(doc, remove_stop=True):
     List of tokenized words
 
     """
+    if additional_stop != None:
+        stop_set.update(additional_stop.split(','))
     if remove_stop:
         return [word.strip() for word in doc.split() if word not in stop_set]
     else:
         return [word.strip() for word in doc.split()]
 
-def text_prepro(text, replace=None, r_stop=True, lemmatize=True):
+def text_prepro(text, replace=None, r_stop=True, add_stop=None, lemmatize=True):
     """
 
     Main function that preprocesses the text by:
@@ -173,6 +182,10 @@ def text_prepro(text, replace=None, r_stop=True, lemmatize=True):
     r_stop : boolean, default True
         Value to pass to the tokenizer to remove or keep stop words
 
+    add_stop : str, optional
+        Additional stop words to pass to the tokenzier. These must be single
+        lowercase words separated by a comma without spacing.
+
     lemmatize : boolean
         Determines whether to lemmatize the text or not
 
@@ -188,6 +201,9 @@ def text_prepro(text, replace=None, r_stop=True, lemmatize=True):
         text_cln = kp.replace_keywords(text_cln)
     if lemmatize:
         text_cln = lemmatizer(text_cln)
-    text_cln = tokenizer(text_cln,remove_stop=r_stop)
-    
-    return text_cln
+    if add_stop != None:
+        text_cln = tokenizer(text_cln, remove_stop=r_stop, additional_stop=add_stop)
+        return text_cln
+    else:
+        text_cln = tokenizer(text_cln, remove_stop=r_stop)
+        return text_cln
